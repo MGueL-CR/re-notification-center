@@ -1,15 +1,14 @@
 {
-"name": "Notification Center", 
-"description": "Detach notification center to top panel and customizations.Please reset the extension after updating.\nThe Extension will stop when upgraded to an incompatible version.\nIn that case an Update tab is created to easily reset the extension.\nA Reset button is also always present in Preferences option in the Top Right Application menu of the extension preferences window.",
-"comment": "Detach notification center to top panel and customizations.",
-"uuid": "notification-center@Selenium-H", 
+"name": "Re: Notification Center", 
+"description": "Move the notification center to the top panel with customizable appearance, behavior, and notification management.",
+"comment": "Notification center customization for GNOME Shell.",
+"uuid": "re-notification-center@mguel-cr", 
 "settings-schema": "org.gnome.shell.extensions.notification-center", 
 "shell-version": [
 	"3.38",
-	"40",
-	"41"
+	"40"
 ],
 "status" : "",
-"url": "https://github.com/Selenium-H/Notification-Center", 
-"version": 24.02
+"url": "https://github.com/MGueL-CR/re-notification-center", 
+"version": 1
 }

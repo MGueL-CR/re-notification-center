@@ -3,15 +3,19 @@
 </p>
 
 <h1 align="center">
-  Notification Center
+  Re: Notification Center
 </h1>
 
 <p align="center">
-Version 24.02
+Version 1.0.0
 </p>
 
 <p align="center">
 A GNOME Shell extension for detaching notification center and customization.
+</p>
+
+<p align="center">
+Re: Notification Center is a continuation of the original Notification Center project by Selenium-H, focused on maintaining compatibility with newer GNOME Shell releases while preserving the original experience.
 </p>
 
 <p align="center">
@@ -67,11 +71,10 @@ A GNOME Shell extension for detaching notification center and customization.
         <br>Enable it in <code>GNOME Tweaks</code> or <code>Extensions</code> application.<br>
       </td>
       <td>
-        <a href="https://extensions.gnome.org/extension/1526/notification-centerselenium-h/">Get this extension from here</a> 
+        <a href="#">Get this extension from here</a> 
       </td>
     </tr>
   </table>
-  <br>Also, please check the <a href="https://github.com/Selenium-H/Notification-Center/tree/experimental">experimental</a> <code>branch</code> of this project for most recently updated version.<br><br>
 </div>
 
 <h1 align="center">
@@ -79,8 +82,11 @@ A GNOME Shell extension for detaching notification center and customization.
 </h1>
 
 This extension is inspired from
+
+[Notification Center](https://extensions.gnome.org/extension/1526/notification-centerselenium-h/) by Selenium-H
 [Extend Panel Menu Extension](https://extensions.gnome.org/extension/1201/extend-panel-menu/) by julio641742, 
 [Notifications Alert Extension](https://extensions.gnome.org/extension/258/notifications-alert-on-user-menu/) by hackedbellini, 
 [Files View Extension](https://extensions.gnome.org/extension/1395/files-view/) by abakkk
 
 Thanks to @amivaleo (Italian translation), @goodwillcoding, @Vistaus (Dutch translation), @GorrillaRibs, @hlechner, @Sa2908, @scottste, @kuroehanako (Korean translation).
+
