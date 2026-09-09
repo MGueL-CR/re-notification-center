@@ -1,56 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Version 23.04
-=============
- 
--->
+
 <schemalist gettext-domain="gnome-shell-extensions">
 
-<enum id="org.gnome.shell.extensions.notification-center.events-position">
+<enum id="org.gnome.shell.extensions.re-notification-center.events-position">
     <value nick="below" value="0"/>
     <value nick="dontshow" value="1"/>
     <value nick="beside" value="2"/>
   </enum>
 
-  <enum id="org.gnome.shell.extensions.notification-center.dnd-position">
+  <enum id="org.gnome.shell.extensions.re-notification-center.dnd-position">
     <value nick="none" value="0"/>
     <value nick="top" value="1"/>
     <value nick="bottom" value="2"/>
   </enum>
   
-  <enum id="org.gnome.shell.extensions.notification-center.clear-button-alignment">
+  <enum id="org.gnome.shell.extensions.re-notification-center.clear-button-alignment">
     <value nick="left" value="0"/>
     <value nick="center" value="1"/>
     <value nick="right" value="2"/>
     <value nick="hide" value="3"/>
   </enum>
   
-  <enum id="org.gnome.shell.extensions.notification-center.banner-pos">
+  <enum id="org.gnome.shell.extensions.re-notification-center.banner-pos">
     <value nick="left" value="0"/>
     <value nick="center" value="1"/>
     <value nick="right" value="2"/>
   </enum>
   
-  <enum id="org.gnome.shell.extensions.notification-center.indicator-pos">
+  <enum id="org.gnome.shell.extensions.re-notification-center.indicator-pos">
     <value nick="left" value="0"/>
     <value nick="center" value="1"/>
     <value nick="right" value="2"/>
   </enum>
   
-  <enum id="org.gnome.shell.extensions.notification-center.new-notification">
+  <enum id="org.gnome.shell.extensions.re-notification-center.new-notification">
     <value nick="none" value="0"/>
     <value nick="dot" value="1"/>
     <value nick="count" value="2"/>
   </enum>
   
-  <enum id="org.gnome.shell.extensions.notification-center.for-list">
+  <enum id="org.gnome.shell.extensions.re-notification-center.for-list">
     <value nick="none" value="0"/>
     <value nick="count" value="1"/>
     <value nick="banner" value="2"/>
     <value nick="both" value="3"/>
   </enum>
   
-  <schema id="org.gnome.shell.extensions.notification-center" path="/org/gnome/shell/extensions/notification-center/">
+  <schema id="org.gnome.shell.extensions.re-notification-center" path="/org/gnome/shell/extensions/re-notification-center/">
   
     <key name="show-media" type="i">
       <default>1</default>
@@ -70,7 +66,7 @@ Version 23.04
       <description>Show Events list on Notification Center</description>
     </key>
     
-    <key enum="org.gnome.shell.extensions.notification-center.events-position" name="events-position">
+    <key enum="org.gnome.shell.extensions.re-notification-center.events-position" name="events-position">
       <default>'below'</default>
       <summary>Also, Show Events List</summary>
       <description>Also, show Events List</description>
@@ -100,13 +96,13 @@ Version 23.04
       <description>Order of sections in Notification Center</description>
     </key>        
     
-    <key enum="org.gnome.shell.extensions.notification-center.dnd-position" name="dnd-position">
+    <key enum="org.gnome.shell.extensions.re-notification-center.dnd-position" name="dnd-position">
       <default>'bottom'</default>
       <summary>Do Not Disturb menu position</summary>
       <description>Do Not Disturb menu position</description>
     </key>
     
-    <key enum="org.gnome.shell.extensions.notification-center.clear-button-alignment" name="clear-button-alignment">
+    <key enum="org.gnome.shell.extensions.re-notification-center.clear-button-alignment" name="clear-button-alignment">
       <default>'right'</default>
       <summary>Clear All Button position</summary>
       <description>Clear All Button position</description>
@@ -156,7 +152,7 @@ Version 23.04
       <description>Notification Banner position</description>
     </key>
 
-    <key enum="org.gnome.shell.extensions.notification-center.banner-pos" name="indicator-pos">
+    <key enum="org.gnome.shell.extensions.re-notification-center.banner-pos" name="indicator-pos">
       <default>'right'</default>
       <summary>Notification Center icon position on panel</summary>
       <description>Notifications Center icon position</description>
@@ -186,7 +182,7 @@ Version 23.04
       <description>AutoHide notification indicator on panel</description>
     </key>
     
-    <key enum="org.gnome.shell.extensions.notification-center.new-notification" name="new-notification">
+    <key enum="org.gnome.shell.extensions.re-notification-center.new-notification" name="new-notification">
       <default>'dot'</default>
       <summary>When new notification arrives</summary>
       <description>When new notification arrives</description>
@@ -246,7 +242,7 @@ Version 23.04
       <description>List of Scripts for applications</description>
     </key>
     
-    <key enum="org.gnome.shell.extensions.notification-center.for-list" name="for-list">
+    <key enum="org.gnome.shell.extensions.re-notification-center.for-list" name="for-list">
       <default>'none'</default>
       <summary>When new notification arrives</summary>
       <description>When new notification arrives</description>
@@ -258,7 +254,9 @@ Version 23.04
       <description>Run scripts on new notification</description>
     </key>         
    
-    <!--  =============================================================================   Extension Variables  =========================================================================================== -->
+    <!--
+          Extension Variables
+    -->
 
     <key name="current-version" type="d">
       <default>23.00</default>
