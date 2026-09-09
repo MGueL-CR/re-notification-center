@@ -60,7 +60,7 @@ const NotificationCenter = new LangClass({
   _init: function () {
 
     ExtensionUtils.initTranslations("notification-center");
-    this.prefs = ExtensionUtils.getSettings("org.gnome.shell.extensions.notification-center");
+    this.prefs = ExtensionUtils.getSettings("org.gnome.shell.extensions.re-notification-center");
     this.parent(1-0.5*this.prefs.get_enum('indicator-pos'), "NotificationCenter");   
     this._messageList                = Main.panel.statusArea.dateMenu._messageList;
     this._messageListParent          = this._messageList.get_parent();

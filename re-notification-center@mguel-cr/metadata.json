@@ -1,14 +1,14 @@
 {
-"name": "Re: Notification Center", 
+"name": "Re: Notification Center",
 "description": "Move the notification center to the top panel with customizable appearance, behavior, and notification management.",
 "comment": "Notification center customization for GNOME Shell.",
-"uuid": "re-notification-center@mguel-cr", 
-"settings-schema": "org.gnome.shell.extensions.notification-center", 
+"uuid": "re-notification-center@mguel-cr",
+"settings-schema": "org.gnome.shell.extensions.re-notification-center",
 "shell-version": [
 	"3.38",
 	"40"
 ],
 "status" : "",
-"url": "https://github.com/MGueL-CR/re-notification-center", 
+"url": "https://github.com/MGueL-CR/re-notification-center",
 "version": 1
 }

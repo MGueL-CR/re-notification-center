@@ -5,15 +5,14 @@ Version 23.05
  
 */
 
-const Config         = imports.misc.config;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Extension      = ExtensionUtils.getCurrentExtension();
-const Metadata       = Extension.metadata;
 const Gio            = imports.gi.Gio;
 const GLib           = imports.gi.GLib;
 const GObject        = imports.gi.GObject;
 const Gtk            = imports.gi.Gtk;
 const Lang           = imports.lang;
+const Metadata       = Extension.metadata;
 const _              = imports.gettext.domain("notification-center").gettext;
 
 let settings = null;
@@ -21,7 +20,7 @@ let settings = null;
 function init() {
 
   ExtensionUtils.initTranslations("notification-center");
-  settings = ExtensionUtils.getSettings("org.gnome.shell.extensions.notification-center");
+  settings = ExtensionUtils.getSettings("org.gnome.shell.extensions.re-notification-center");
   
 }
 
@@ -44,9 +43,9 @@ const ExtensionPreferencesWindow_NotificationCenterExtension = new GObject.Class
 
   _init: function( widget ) {
   
-    this.toplevel  = widget.get_native();
+    this.toplevel  = widget.get_toplevel();
     this.headerBar = this.toplevel.get_titlebar();
-    this.headerBar.set_title_widget(new Gtk.StackSwitcher({halign: Gtk.Align.CENTER, stack: widget}));
+    this.headerBar.custom_title = new Gtk.StackSwitcher({expand:true, halign: Gtk.Align.CENTER, visible: true, stack: widget});
     this.createAppMenu();  
     this.createRefreshButton();  
     
@@ -54,54 +53,61 @@ const ExtensionPreferencesWindow_NotificationCenterExtension = new GObject.Class
   
   createAppMenu: function( ) {
       
-    let preferencesDialogAction = new Gio.SimpleAction({ name: 'preferences'});  
-    let helpDialogAction        = new Gio.SimpleAction({ name: 'help'});
-    let aboutDialogAction       = new Gio.SimpleAction({ name: 'about'});
+    let preferencesDialogAction = new Gio.SimpleAction({ name: 'app.preferences'});
+    let helpDialogAction        = new Gio.SimpleAction({ name: 'app.help'});  
+    let aboutDialogAction       = new Gio.SimpleAction({ name: 'app.about'});
     let actionGroup             = new Gio.SimpleActionGroup();
     let menu                    = new Gio.Menu();
-    let appMenu                 = Gtk.PopoverMenu.new_from_model(menu);
-    let appMenuButton           = new Gtk.MenuButton({ popover: appMenu, icon_name: "open-menu-symbolic", visible:true});
+    let appMenu                 = new Gtk.PopoverMenu();
+    let appMenuButton           = new Gtk.MenuButton({ popover: appMenu, image: new Gtk.Image({ gicon: new Gio.ThemedIcon({ name: "open-menu-symbolic" }), icon_size: Gtk.IconSize.BUTTON, visible: true, }), visible:true});
+    
+    actionGroup.add_action(aboutDialogAction)
+    actionGroup.add_action(helpDialogAction)
+    actionGroup.add_action(preferencesDialogAction)
 
-    menu.append(_("Preferences"),               "prefswindow.preferences");
-    menu.append(_("Help"),                      "prefswindow.help"       );
-    menu.append(_("About")+" Notification Center", "prefswindow.about"      );
-    
-    actionGroup.add_action(aboutDialogAction);
-    actionGroup.add_action(helpDialogAction);
-    actionGroup.add_action(preferencesDialogAction);
-    
-    this.toplevel.insert_action_group('prefswindow', actionGroup);    
+    menu.append(_("Preferences"),                  "app.preferences"); 
+    menu.append(_("Help"),                         "app.help"       );  
+    menu.append(_("About")+" Notification Center", "app.about"      );
+    appMenu.bind_model(menu, "app"); 
+        
     this.headerBar.pack_end(appMenuButton);
+    this.toplevel.insert_action_group('app', actionGroup);    
     
     preferencesDialogAction.connect('activate', ()=> {
-      let dialog = new Gtk.Dialog({ title: _("Preferences"),transient_for: this.toplevel,use_header_bar: true, modal: true });
-      let vbox                  = new Gtk.Box({ hexpand:true, vexpand: true, valign:Gtk.Align.CENTER, orientation: Gtk.Orientation.VERTICAL });    
+      let dialog                = new Gtk.Dialog({ title: _("Preferences"),transient_for: this.toplevel,use_header_bar: true, modal: true });
+      let vbox                  = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin: 30 });    
       this.resetExtensionButton = new ExtensionResetButton_NotificationCenterExtension(this.toplevel );
-      vbox.append(this.resetExtensionButton);
-      dialog.get_content_area().append(vbox);  
-      dialog.present();  
+      vbox.pack_start(this.resetExtensionButton, false, false, 0);
+      dialog.get_content_area().pack_start(vbox, false, false, 0);  
+      dialog.show_all();  
     });
+
 
     helpDialogAction.connect('activate', ()=> {
       let dialog    = new Gtk.Dialog({ title: _("Help"), transient_for: this.toplevel, use_header_bar: true, modal: true });
-      let vbox      = new Gtk.Box({ hexpand:true, vexpand: true, valign:Gtk.Align.CENTER, orientation: Gtk.Orientation.VERTICAL });    
-      let firstInfo = new Gtk.Label({ justify: 0, use_markup: true, label: _(Metadata.description)});  
-      vbox.append(firstInfo);
-      dialog.get_content_area().append(vbox);  
-      dialog.present();  
+      let vbox      = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin: 30 });    
+      let firstInfo = new Gtk.Label({ halign: Gtk.Align.CENTER, justify: 3, label: _(Extension.metadata.description)});  
+      vbox.pack_start(firstInfo,            false, false, 0);
+      dialog.get_content_area().pack_start(vbox, false, false, 0);  
+  
+      dialog.show_all();  
     });    
 
     aboutDialogAction.connect('activate', ()=> {  
-      let aboutDialog = new Gtk.AboutDialog({ transient_for: this.toplevel, modal: true, logo: (new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 128 })).get_paintable(), program_name: Extension.metadata.name, version: Extension.metadata.version.toString()+_(Extension.metadata.status), comments: _(Extension.metadata.comment), license_type: 3 } );
-      aboutDialog.get_titlebar().get_title_widget().visible = true;
-      aboutDialog.present();      
+      let aboutDialog = new Gtk.AboutDialog({ transient_for: this.toplevel, modal: true, logo: (new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 128 })).get_pixbuf(), program_name: Extension.metadata.name, version: Extension.metadata.version.toString()+_(Extension.metadata.status), comments: _(Extension.metadata.comment), license_type: 3    } );
+      aboutDialog.get_header_bar().get_custom_title().visible = true;
+      aboutDialog.show_all();      
     });
     
+    appMenu.connect("button-release-event", ()=> {
+      appMenu.popdown();
+    });
+            
   },
   
   createRefreshButton: function() {
   
-    let refreshButton = new Gtk.Button({ icon_name: "view-refresh-symbolic", visible:true}); 
+    let refreshButton = new Gtk.Button({ image: new Gtk.Image({ gicon: new Gio.ThemedIcon({ name: "view-refresh-symbolic" }), icon_size: Gtk.IconSize.BUTTON, visible: true, }), visible:true}); 
     refreshButton.connect('clicked', ()=> {
       reloadExtension();
     });
@@ -125,12 +131,12 @@ const ExtensionResetButton_NotificationCenterExtension =  new GObject.Class({
   
   resetExtension: function( object, functionToBeCalledAtTheEnd, parameter ) {
   
-    let dialog = new Gtk.MessageDialog({ transient_for: object.get_native ? object.get_native() : object, modal: true });  
+    let dialog = new Gtk.MessageDialog({ transient_for: object.get_toplevel ? object.get_toplevel() : object, modal: true });  
     dialog.set_default_response(Gtk.ResponseType.OK);
-    dialog.add_button("Cancel", Gtk.ResponseType.CANCEL);
-    dialog.add_button("OK", Gtk.ResponseType.OK);
+    dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
+    dialog.add_button(Gtk.STOCK_OK, Gtk.ResponseType.OK);
     dialog.set_markup("<big><b>"+_("Reset Notification Center to defaults?")+"</b></big>");
-    dialog.get_message_area().append(new Gtk.Label({ wrap: true, justify: 3, use_markup: true, label: _("Resetting the extension will discard the current preferences configuration and restore default one.")}));
+    dialog.get_message_area().pack_start(new Gtk.Label({ wrap: true, justify: 3, use_markup: true, label: _("Resetting the extension will discard the current preferences configuration and restore default one.")}), true, true, 0);
     dialog.connect('response', Lang.bind(this, function(dialog, id) {
       if(id != Gtk.ResponseType.OK) {
         dialog.destroy();  
@@ -183,7 +189,7 @@ const ExtensionResetButton_NotificationCenterExtension =  new GObject.Class({
     reloadExtension();
     }));
     
-    dialog.present();
+    dialog.show_all();
 		
   }, 
 	  
@@ -224,12 +230,13 @@ const Prefs_NotificationCenterExtension = new GObject.Class({
 });
 
 const PrefsWindow_NotificationCenterExtension =  new GObject.Class({
+
   Name: "PrefsWindow_NotificationCenterExtension",
   Extends: Gtk.Grid,
 
   _init: function(page) {
     
-    this.parent({ column_spacing: 80, halign: Gtk.Align.CENTER,  margin_top: 20, margin_end: 20, margin_bottom: 20, margin_start: 20, row_spacing: 20 });
+    this.parent({ column_spacing: 80, halign: Gtk.Align.CENTER, margin: 20, row_spacing: 20 ,border_width:20});
 
   },
 
@@ -281,9 +288,9 @@ const PrefsWindow_NotificationCenterExtension =  new GObject.Class({
       settings.set_strv(KEY,keyVal);
     }));
     
-    box.append(SettingCombo);
-    box.append(new Gtk.Label({label: "  +  "}));
-    box.append(strSetting);
+    box.add(SettingCombo);
+    box.add(new Gtk.Label({label: "  +  "}));
+    box.add(strSetting);
     
     this.attachLabel(KEY,pos);
     this.attach(box    ,1, pos, 1,  1);
@@ -365,14 +372,14 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
  
   addApp: function()  {
   
-    let dialog = new Gtk.Dialog({ title: _('Choose an application'),transient_for: this.get_native(),use_header_bar: true,modal: true });
-    dialog._appChooser = new Gtk.AppChooserWidget({  margin_top: 5, margin_end: 5, margin_bottom: 5, margin_start: 5, show_all: true, vexpand: true });
+    let dialog = new Gtk.Dialog({ title: _('Choose an application'),transient_for: this.get_toplevel(),use_header_bar: true,modal: true });
+    dialog._appChooser = new Gtk.AppChooserWidget({ show_all: true });
     dialog.set_default_response(Gtk.ResponseType.OK);
-    dialog.add_button("Cancel", Gtk.ResponseType.CANCEL);
-    let addButton = dialog.add_button(_("Add"), Gtk.ResponseType.OK);
-    let hbox = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL, hexpand:true, vexpand:true});
-    hbox.append(dialog._appChooser);
-    dialog.get_content_area().append(hbox);
+    dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
+    let addButton = dialog.add_button("Add", Gtk.ResponseType.OK);
+    let hbox = new Gtk.Box({orientation: Gtk.Orientation.VERTICAL,margin: 5});
+    hbox.pack_start(dialog._appChooser, true, true, 0);
+    dialog.get_content_area().pack_start(hbox, true, true, 0);
     dialog.connect('response', Lang.bind(this, function(dialog, id) {
       if (id != Gtk.ResponseType.OK) {
               dialog.destroy();
@@ -403,7 +410,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
       dialog.destroy();
     }));
     
-    dialog.present();
+    dialog.show_all();
     
   },
 
@@ -433,7 +440,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
     
     this.treeView.append_column(appColumn);
     appColumn.set_fixed_width(370);
-    listBox.set_child(this.treeView);
+    listBox.add(this.treeView);
     this.attach(listBox,0,0,1,1);
     
   },
@@ -522,16 +529,16 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
   fileManagementDialogWindow: function(action) {
   
     let fileFormats  = new Gtk.FileFilter();        
-    let dialog       = new Gtk.FileChooserDialog({ title: _("Choose a Script file")+" ", action: action, filter: fileFormats, transient_for: this.get_native(),use_header_bar: true,modal: true });
+    let dialog       = new Gtk.FileChooserDialog({ title: _("Choose a Script file")+" ", action: action, filter: fileFormats, do_overwrite_confirmation: true, transient_for: this.get_toplevel(),use_header_bar: true,modal: true });
     let exportButton = dialog.add_button(_("Set"), Gtk.ResponseType.OK);
         
     fileFormats.add_pattern("*.sh");    
-    dialog.add_button(_("Cancel"), Gtk.ResponseType.CANCEL);
-    dialog.present();
+    dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
+    dialog.show_all();
     
     dialog.connect('response', Lang.bind(this, function(dialog, id) {
       if(id == Gtk.ResponseType.OK) {
-        this.scriptLocation.text = dialog.get_file().get_path();
+        this.scriptLocation.text = dialog.get_filename();
       }
       dialog.destroy();
       return; 
@@ -541,7 +548,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
 
   showPrefs: function() {
   
-    let box             = new Gtk.Grid({ column_spacing: 20, halign: Gtk.Align.CENTER, margin_top: 20, margin_end: 20,margin_bottom: 20,margin_start: 20, row_spacing: 20 });
+    let box             = new Gtk.Grid({ column_spacing: 20, halign: Gtk.Align.CENTER, margin: 20, row_spacing: 20 });
     let addButton       = new Gtk.Button({label: _("     Add    "), halign:Gtk.Align.START});
     let delButton       = new Gtk.Button({label: _(" Remove "), halign:Gtk.Align.END});
     this.scriptLocation = new Gtk.Entry({text: "", sensitive:false });
@@ -552,7 +559,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
     this.AppLabel       = new Gtk.Label({ xalign:  1, use_markup: true, halign: Gtk.Align.CENTER });
     this.AppIcon        = new Gtk.Image({ gicon:null, pixel_size: 96 });
     this.iconImageBox   = new Gtk.Box({halign: Gtk.Align.CENTER});
-    this.iconImageBox.append(this.AppIcon);
+    this.iconImageBox.set_center_widget(this.AppIcon);
     
     this.AppLabel.label = _("No application selected");    
     
@@ -585,7 +592,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
         settings.set_strv('script-list', scriptList);
       }
     });
-    
+       
     box.attach(addButton,                                                                                                                        0, 0,  1, 1);
     box.attach(delButton,                                                                                                                        1, 0,  1, 1);
     box.attach(new Gtk.Label({label: ""}),                                                                                                       0, 1,  2, 1);
@@ -599,7 +606,7 @@ const PrefsWindowForAppList_NotificationCenterExtension = new GObject.Class({
     box.attach(this.AppLabel,                                                                                                                    0, 10, 2, 1);
     box.attach(this.scriptLocation,                                                                                                              0, 11, 2, 1);
     box.attach(this.setButton,                                                                                                                   1, 12, 1, 1);
-    box.attach(this.browseButton,                                                                                                                0, 12, 1, 1);  
+    box.attach(this.browseButton,                                                                                                                0, 12, 1, 1);
     box.attach(this.clearButton,                                                                                                                 1, 12, 1, 1);          
     this.attach(box, 1, 0, 1, 1);
     this.treeView.connect("cursor-changed",()=>this.appViewChange());
@@ -656,10 +663,11 @@ const PrefsWindowForCalendar_NotificationCenterExtension =  new GObject.Class({
     this.attach(SettingSwitch, 1, pos, 1, 1);
     
   },
-   
+ 
 });
 
 const PrefsWindowForIndicator_NotificationCenterExtension =  new GObject.Class({
+
   Name: "PrefsWindowForIndicator_NotificationCenterExtension",
   Extends: PrefsWindow_NotificationCenterExtension,
   
@@ -722,6 +730,7 @@ const PrefsWindowForIndicator_NotificationCenterExtension =  new GObject.Class({
 });
 
 const PrefsWindowForNotifications_NotificationCenterExtension =  new GObject.Class({
+
   Name: "PrefsWindowForNotifications_NotificationCenterExtension",
   Extends: PrefsWindow_NotificationCenterExtension,
   
@@ -777,7 +786,7 @@ const PrefsWindowForNotifications_NotificationCenterExtension =  new GObject.Cla
     this.prefStr   ("indicator-shortcut",             pos++, ['<Alt>', '<Ctrl>', '<Shift>', '<Super>'], [_('Alt Key'), _('Ctrl Key'), _('Shift Key'), _('Super Key')]   );
     this.prefTime  ("max-height",                     pos++, 20,  100, 1                                                                                                );
     this.prefCombo ("banner-pos",                     pos++, ["11","12","13","21","22","23","31","32","33"], [_('Top Left'), _('Top Center'), _('Top Right'), _('Middle Left'), _('Middle Center'), _('Middle Right'), _('Bottom Left'), _('Bottom Center'), _('Bottom Right')]);  
- 
+    
   },
   
   prefSectionPosition: function(KEY, pos, options, items) {
@@ -848,20 +857,20 @@ const UpdatePage_NotificationCenterExtension =  new GObject.Class({
         
   displayPrefs: function(){
   
-    this.vbox    = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin_top: 30,margin_end: 30,margin_bottom: 30,margin_start: 30 });
-    let imageBox = new Gtk.Box({halign: Gtk.Align.CENTER});
+    this.vbox    = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL, margin: 30 });
+    let imageBox = new Gtk.Box();
     let image    = new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 96 });
     
     this.versionLabel         = new Gtk.Label({ halign: Gtk.Align.CENTER, wrap: true, justify: 2, use_markup: true, label:""+ _("Extension is upgraded to Version  ")+ Metadata.version});
     this.firstInfo            = new Gtk.Label({ halign: Gtk.Align.CENTER, wrap: true, justify: 3, use_markup: true, label:"\n\n" + _("A Reset to default preferences is needed for upgrading to this version. Please Reset the extension by clicking the button below.")+"\n\n"});  
     this.resetExtensionButton = new ExtensionResetButton_NotificationCenterExtension( this );
 
-    imageBox.append(image);
-    this.vbox.append(imageBox);
-    this.vbox.append(this.versionLabel);
-    this.vbox.append(this.firstInfo);
-    this.vbox.append(this.resetExtensionButton);
-    this.set_child(this.vbox);
+    imageBox.set_center_widget(image);
+    this.vbox.pack_start(imageBox,                  false, false, 0);
+    this.vbox.pack_start(this.versionLabel,         false, false, 0);
+    this.vbox.pack_start(this.firstInfo,            false, false, 0);
+    this.vbox.pack_start(this.resetExtensionButton, false, false, 0);
+    this.add(this.vbox);
     
   },
 
@@ -870,7 +879,7 @@ const UpdatePage_NotificationCenterExtension =  new GObject.Class({
     if(mode == false) {
       return;
     }
-    this.resetExtensionButton.hide();    
+    this.resetExtensionButton.destroy();    
     this.firstInfo.label ="\n\n <big><b> "+_("Upgraded Successfully")+"</b></big>";
     this.versionLabel.label = _("Version")+" "+Metadata.version;
     settings.set_double('current-version', Metadata.version);//settings.reset('current-version');
