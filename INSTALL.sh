@@ -8,8 +8,8 @@
 installDir=~/.local/share/gnome-shell/extensions
 
 # Extension Name and directory
-extensionName=notification-center
-extensionDir=$extensionName@Selenium-H
+extensionName=re-notification-center
+extensionDir=$extensionName@mguel-cr
 
 echo ""
 
