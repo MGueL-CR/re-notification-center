@@ -259,7 +259,7 @@
     -->
 
     <key name="current-version" type="d">
-      <default>23.00</default>
+      <default>0.00</default>
       <summary>Version of Current Extension</summary>
       <description>Provided to ensure that extension is stopped incase of autoupdate from previous version to prevent unwanted effects</description>
     </key>

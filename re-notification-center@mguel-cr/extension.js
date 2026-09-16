@@ -444,7 +444,7 @@ const NotificationCenter = new LangClass({
 
   startNotificationCenter: function() {
 
-    if(this.prefs.get_double("current-version") < 23.03) {    
+    if(this.prefs.get_double("current-version") < 0) {
       Main.notify("Notification Center","Extension is updated. Please Complete the update process in the extension preferences.");
       return;
     }
@@ -708,4 +708,3 @@ const NotificationCenter = new LangClass({
   },
   
 });
-
