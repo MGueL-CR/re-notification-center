@@ -13,13 +13,13 @@ const GObject        = imports.gi.GObject;
 const Gtk            = imports.gi.Gtk;
 const Lang           = imports.lang;
 const Metadata       = Extension.metadata;
-const _              = imports.gettext.domain("notification-center").gettext;
+const _              = imports.gettext.domain("re-notification-center").gettext;
 
 let settings = null;
 
 function init() {
 
-  ExtensionUtils.initTranslations("notification-center");
+  ExtensionUtils.initTranslations("re-notification-center");
   settings = ExtensionUtils.getSettings("org.gnome.shell.extensions.re-notification-center");
   
 }
