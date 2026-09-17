@@ -15,6 +15,7 @@ const GObject        = imports.gi.GObject;
 const Gtk            = imports.gi.Gtk;
 const Lang           = imports.lang;
 const _              = imports.gettext.domain("re-notification-center").gettext;
+const VersionName    = Metadata["version-name"];
 
 let settings = null;
 
@@ -92,7 +93,7 @@ const ExtensionPreferencesWindow_NotificationCenterExtension = new GObject.Class
     });    
 
     aboutDialogAction.connect('activate', ()=> {  
-      let aboutDialog = new Gtk.AboutDialog({ transient_for: this.toplevel, modal: true, logo: (new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 128 })).get_paintable(), program_name: Extension.metadata.name, version: Extension.metadata.version.toString()+_(Extension.metadata.status), comments: _(Extension.metadata.comment), license_type: 3 } );
+      let aboutDialog = new Gtk.AboutDialog({ transient_for: this.toplevel, modal: true, logo: (new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 128 })).get_paintable(), program_name: Extension.metadata.name, version: VersionName, comments: Metadata.description, license_type: 3 } );
       aboutDialog.get_titlebar().get_title_widget().visible = true;
       aboutDialog.present();      
     });
@@ -174,7 +175,6 @@ const ExtensionResetButton_NotificationCenterExtension =  new GObject.Class({
     settings.reset("for-list");
     settings.reset("run-script");
 
-    //settings.set_int("current-version", Metadata.version);
     dialog.destroy();
     if(object[functionToBeCalledAtTheEnd]) {
       object[functionToBeCalledAtTheEnd]( parameter );
@@ -852,7 +852,7 @@ const UpdatePage_NotificationCenterExtension =  new GObject.Class({
     let imageBox = new Gtk.Box({halign: Gtk.Align.CENTER});
     let image    = new Gtk.Image({ file: Extension.dir.get_child('eicon.png').get_path(), pixel_size: 96 });
     
-    this.versionLabel         = new Gtk.Label({ halign: Gtk.Align.CENTER, wrap: true, justify: 2, use_markup: true, label:""+ _("Extension is upgraded to Version  ")+ Metadata.version});
+    this.versionLabel         = new Gtk.Label({ halign: Gtk.Align.CENTER, wrap: true, justify: 2, use_markup: true, label:""+ _("Extension is upgraded to Version  ")+ VersionName});
     this.firstInfo            = new Gtk.Label({ halign: Gtk.Align.CENTER, wrap: true, justify: 3, use_markup: true, label:"\n\n" + _("A Reset to default preferences is needed for upgrading to this version. Please Reset the extension by clicking the button below.")+"\n\n"});  
     this.resetExtensionButton = new ExtensionResetButton_NotificationCenterExtension( this );
 
@@ -872,8 +872,8 @@ const UpdatePage_NotificationCenterExtension =  new GObject.Class({
     }
     this.resetExtensionButton.hide();    
     this.firstInfo.label ="\n\n <big><b> "+_("Upgraded Successfully")+"</b></big>";
-    this.versionLabel.label = _("Version")+" "+Metadata.version;
-    settings.set_double('current-version', Metadata.version);//settings.reset('current-version');
+    this.versionLabel.label = _("Version")+" "+VersionName;
+    settings.set_double('current-version', parseFloat(VersionName));
   
   },
   
