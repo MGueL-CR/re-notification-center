@@ -15,7 +15,7 @@ const PopupMenu           = imports.ui.popupMenu;
 const ShellActionMode     = imports.gi.Shell.ActionMode;
 const St                  = imports.gi.St;
 const utilSpawn           = imports.misc.util.spawn;
-const _                   = imports.gettext.domain("notification-center").gettext;
+const _                   = imports.gettext.domain("re-notification-center").gettext;
 
 let notificationCenter = null;
 
@@ -59,8 +59,8 @@ const NotificationCenter = new LangClass({
 
   _init: function () {
 
-    ExtensionUtils.initTranslations("notification-center");
-    this.prefs = ExtensionUtils.getSettings("org.gnome.shell.extensions.notification-center");
+    ExtensionUtils.initTranslations("re-notification-center");
+    this.prefs = ExtensionUtils.getSettings("org.gnome.shell.extensions.re-notification-center");
     this.parent(1-0.5*this.prefs.get_enum('indicator-pos'), "NotificationCenter");   
     this._messageList                = Main.panel.statusArea.dateMenu._messageList;
     this._messageListParent          = this._messageList.get_parent();
@@ -444,7 +444,7 @@ const NotificationCenter = new LangClass({
 
   startNotificationCenter: function() {
 
-    if(this.prefs.get_double("current-version") < 23.03) {    
+    if(this.prefs.get_double("current-version") < 0) {
       Main.notify("Notification Center","Extension is updated. Please Complete the update process in the extension preferences.");
       return;
     }
@@ -708,5 +708,3 @@ const NotificationCenter = new LangClass({
   },
   
 });
-
-

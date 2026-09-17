@@ -1,5 +1,5 @@
 <p align="center">
-<img src = /notification-center@Selenium-H/eicon.png >
+<img src = /re-notification-center@mguel-cr/eicon.png >
 </p>
 
 <h1 align="center">
