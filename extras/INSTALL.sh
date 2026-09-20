@@ -1,11 +1,13 @@
 #!/bin/bash
 
-#Version 4
+#Version 5
 #=========
 
+shopt -s extglob
 
 # Default Installation Directory
 installDir=~/.local/share/gnome-shell/extensions
+cd ..
 
 # Extension Name and directory
 extensionName=re-notification-center
@@ -53,7 +55,9 @@ rm -rf $installDir"/"$extensionDir
 echo "Done"
 
 echo -ne "Copying New Version ...          "
-cp -rf $extensionDir $installDir
+mkdir $installDir"/"$extensionDir
+
+cp -rf !(extras) $installDir/$extensionDir
 cp -rf schemas $installDir"/"$extensionDir
 cp -rf locale $installDir"/"$extensionDir
 echo "Done"
@@ -86,7 +90,7 @@ else
   echo ""
   echo "Extension Installed, Translations not done."
 fi 
- 
+
 echo ""
 echo "Restart GNOME Shell ( Alt + F2 , Press r , Press Enter )."
 echo "Enable this extension using GNOME Tweak Tool."
