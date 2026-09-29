@@ -5,7 +5,8 @@
 "settings-schema": "org.gnome.shell.extensions.re-notification-center",
 "shell-version": [
 	"3.38",
-	"40"
+	"40",
+	"41"
 ],
 "version-name": "1.0.0",
 "url": "https://github.com/MGueL-CR/re-notification-center"
