@@ -11,8 +11,8 @@
 <p align="center"><img src = extras/Screenshots/Image_01.png ></p>
 <br>
 <h2 align="center">Versions, Branches & Compatibility</h2>
-
-<table style="border: none; border-collapse: collapse; width: 100%;">
+<div align="center">
+<table style="border:none; border-collapse: collapse;" width="100%;">
   <thead>
     <tr style="border:none; border-bottom: 2px solid">
       <th style="border:none;">Branch</th>
@@ -28,7 +28,7 @@
       <td style="border:none;" align="right">40</td>
       <td style="border:none;" align="center">1.0.0</td>
       <td style="border:none;" align="center"><code>v1.0.0</code></td>
-      <td style="border:none;">Development</td>
+      <td style="border:none;">Stable</td>
     </tr>
     <tr>
       <td style="border:none;"><code>gnome-40</code></td>
@@ -49,39 +49,40 @@
       <td style="border:none;" align="right">41</td>
       <td style="border:none;" align="center">—</td>
       <td style="border:none;" align="center">—</td>
-      <td style="border:none;">In development</td>
+      <td style="border:none;">On hold</td>
     </tr>
     <tr>
       <td style="border:none;"><code>gnome-42</code></td>
       <td style="border:none;" align="right">42</td>
       <td style="border:none;" align="center">—</td>
       <td style="border:none;" align="center">—</td>
-      <td style="border:none;">Planned</td>
+      <td style="border:none;">On hold</td>
     </tr>
     <tr>
       <td style="border:none;"><code>gnome-43</code></td>
       <td style="border:none;" align="right">43</td>
       <td style="border:none;" align="center">—</td>
       <td style="border:none;" align="center">—</td>
-      <td style="border:none;">Planned</td>
+      <td style="border:none;">On hold</td>
     </tr>
     <tr>
       <td style="border:none;"><code>gnome-44</code></td>
       <td style="border:none;" align="right">44</td>
       <td style="border:none;" align="center">—</td>
       <td style="border:none;" align="center">—</td>
-      <td style="border:none;">Planned</td>
+      <td style="border:none;">On hold</td>
     </tr>
     <tr>
       <td style="border:none;"><code>gnome-45</code></td>
       <td style="border:none;" align="right">45</td>
       <td style="border:none;" align="center">—</td>
       <td style="border:none;" align="center">—</td>
-      <td style="border:none;">Planned</td>
+      <td style="border:none;">In development</td>
     </tr>
   </tbody>
 </table>
 <p><small>* GNOME 3.38 compatibility was verified using the GNOME 40 release codebase. No separate <code>gnome-38</code> branch is maintained.</small></p>
+</div>
 <br>
 <h2 align="center">  Customizations</h2>
 
@@ -89,11 +90,60 @@
 <p align="center"><img src = extras/Screenshots/Image_04.png ></p>
 <p align="center"><img src = extras/Screenshots/Image_05.png ></p>
 <p align="center"><img src = extras/Screenshots/Image_06.png ></p>
+
+<br>
+<h2 align="center">Compatibility and publication policy</h2>
+
+<p>GNOME 45 and later are the primary development target and the only versions intended for publication on GNOME Extensions (EGO). Development for GNOME 40–44 may continue on GitHub as a secondary priority, but these versions will not be submitted to EGO.</p>
+
+<p>The <code>master</code> branch always represents the latest stable release of Re: Notification Center, regardless of the GNOME Shell version it targets. Development branches remain separate until their corresponding versions are stable and ready for release.</p>
+
+<div align="center" width="100%;">
+<table style="border:none; border-collapse: collapse;" width="100%;">
+    <thead width: 100%;">
+        <tr>
+            <th>Concept</th>
+            <th>GNOME 45+</th>
+            <th>GNOME 40 – 44</th>
+        </tr>
+    </thead>
+    <tbody width: 100%;">
+        <tr>
+            <td>Development on GitHub</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Current priority</td>
+            <td>Primary</td>
+            <td>Secondary</td>
+        </tr>
+        <tr>
+            <td>Intended for publication on EGO</td>
+            <td>Yes</td>
+            <td>No</td>
+        </tr>
+        <tr>
+            <td>ESM migration</td>
+            <td>Required</td>
+            <td>Not necessarily</td>
+        </tr>
+        <tr>
+            <td>EGO release validation</td>
+            <td>Required</td>
+            <td>Not planned</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
+<p>GNOME 40–44 branches are currently on hold while development focuses on GNOME 45 and later.</p>
+
 <br>
 <h2 align="center">Installations</h2>
 
 <div align="center">
-  <table  style="border:none; border-collapse: collapse; width: 100%;">
+  <table style="border:none; border-collapse: collapse;" width="100%;">
     <tr style="border:none; border-bottom: 2px solid">
       <th style="border:none;">
         <h3>GitHub</h3>
